@@ -1,10 +1,11 @@
 from distutils.core import setup
 from Cython.Build import cythonize
+from distutils.extension import Extension
 import numpy as np
 
+files = ['pymaxflow.pyx', 'graph.cpp', 'maxflow.cpp']
 
-setup(
-    name = "pymaxflow",
-    include_dirs=[np.get_include()],
-    ext_modules = cythonize('pymaxflow.pyx')
-)
+extensions = [Extension("pymaxflow", files, 
+   language="c++", include_dirs=[np.get_include()])]
+
+setup( ext_modules = cythonize(extensions))

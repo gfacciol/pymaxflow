@@ -1,11 +1,12 @@
 import sys
 import pymaxflow
 import pylab
+import scipy.misc
 import numpy as np
 
 eps = 0.01
 
-im = pylab.imread(sys.argv[1]).astype(np.float32)
+im = scipy.misc.imread(sys.argv[1]).astype(np.float32)
 
 indices = np.arange(im.size).reshape(im.shape).astype(np.int32)
 g = pymaxflow.PyGraph(im.size, im.size * 3)
