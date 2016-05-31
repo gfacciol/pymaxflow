@@ -4,36 +4,33 @@ import pylab
 import scipy.misc
 import numpy as np
 
-eps = 0.01
+if len(sys.argv) > 1:
+	filename = sys.argv[1]
+else:
+	filename = 'a2.png'
+	print('no parameter supplied, reading default file %s'%(filename))
 
-im = scipy.misc.imread(sys.argv[1]).astype(np.float32)
-
+im = scipy.misc.imread(filename).astype(np.float32) 
+	
 indices = np.arange(im.size).reshape(im.shape).astype(np.int32)
-g = pymaxflow.PyGraph(im.size, im.size * 3)
+g = pymaxflow.PyGraph(im.size, im.size * 4)
 
 g.add_node(im.size)
 
-# adjacent
-diffs = np.abs(im[:, 1:] - im[:, :-1]).ravel() + eps
+# adjacent left (equal weights)
+diffs = np.abs(im[:, 1:] - im[:, :-1]).ravel()*0 + 50.0
 e1 = indices[:, :-1].ravel()
-e2 = indices[:, 1:].ravel()
-g.add_edge_vectorized(e1, e2, diffs, 0 * diffs)
+e2 = indices[:,  1:].ravel()
+g.add_edge_vectorized(e1, e2, diffs, diffs)
 
-# adjacent up
-diffs = np.abs(im[1:, 1:] - im[:-1, :-1]).ravel() + eps
-e1 = indices[1:, :-1].ravel()
-e2 = indices[:-1, 1:].ravel()
-g.add_edge_vectorized(e1, e2, diffs, 0 * diffs)
-
-# adjacent down
-diffs = np.abs(im[:-1, 1:] - im[1:, :-1]).ravel() + eps
-e1 = indices[:-1, :-1].flatten()
-e2 = indices[1:, 1:].ravel()
-g.add_edge_vectorized(e1, e2, diffs, 0 * diffs)
+# adjacent down (equal weights)
+diffs = np.abs(im[:-1, :] - im[1:, :]).ravel()*0 + 50.0
+e1 = indices[:-1, :].ravel()
+e2 = indices[1: , :].ravel()
+g.add_edge_vectorized(e1, e2, diffs, diffs)
 
 # link to source/sink
-g.add_tweights_vectorized(indices[:, 0], (np.ones(indices.shape[0]) * 1.e9).astype(np.float32), np.zeros(indices.shape[0], np.float32))
-g.add_tweights_vectorized(indices[:, -1], np.zeros(indices.shape[0], np.float32), (np.ones(indices.shape[0]) * 1.e9).astype(np.float32))
+g.add_tweights_vectorized(indices.ravel(), im.ravel(), (255.0 - im.ravel()))
 
 print("calling maxflow")
 g.maxflow()
