@@ -93,7 +93,7 @@ def test_binary_optimization(N=300):
 ###############################
 ###############################
 Emin, f, out = test_binary_optimization()
-print 'Energy: ', Emin
+print('Energy: ', Emin)
 
 import matplotlib.pyplot as plt
 
