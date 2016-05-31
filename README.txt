@@ -1,6 +1,8 @@
 This is a simple Cython wrapper around the MAXFLOW library from Boykov
 and Kolmogorov.  Their original README and License information are
 included below.  Cython wrapper by Thouis (Ray) Jones.
+Cython wrapper for Kolmogorow's binary energy minimization 
+functions (energy.h) by Gabriele Facciolo. 
 
 Installation
 ============
@@ -35,7 +37,8 @@ Test the Package
 $ python test.py someimage.png
 ... figure with input image segmentation should pop up
 
-
+$ python test_energy_pymaxflow.py
+... solves the Potts problem for a random image 
 
 ###################################################################
 #                                                                 #
