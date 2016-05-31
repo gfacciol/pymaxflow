@@ -77,7 +77,7 @@ cdef extern from "energy.h":
     cdef cppclass Energy[capT, tcapT, flowT]:
         Energy(int var_num_max, int edge_num_max) except +
         int add_variable(int)
-        void add_constant(capT E);
+        void add_constant(capT E)
         void add_term1(int i, tcapT cap_source, tcapT cap_sink)
         void add_term2(int i, int j, capT e00, capT e01, capT e10, capT e11)
         flowT minimize()
